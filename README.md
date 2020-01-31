@@ -16,6 +16,9 @@ GitHawk is the highest rated iOS app for GitHub.
 
 |         | Features  |
 ----------|-----------------
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/MarcelRaschke/GitHawk.svg)](https://greenkeeper.io/)
+
 :zero: | _Inbox Zero_ your notifications
 :pencil: | Comment even faster than on GitHub desktop
 :thumbsup: | The only app with emoji reactions!
