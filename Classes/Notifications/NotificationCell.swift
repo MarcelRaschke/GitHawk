@@ -26,7 +26,7 @@ final class NotificationCell: SelectableCell, CAAnimationDelegate {
     )
     public static let topInset = Styles.Sizes.rowSpacing
     public static let headerHeight = ceil(Styles.Text.secondary.preferredFont.lineHeight)
-    public static let actionsHeight = Styles.Sizes.gutter + 4*Styles.Sizes.rowSpacing
+    public static let actionsHeight = Styles.Sizes.buttonMin.height
 
     private weak var delegate: NotificationCellDelegate?
     private let iconImageView = UIImageView()
@@ -99,33 +99,37 @@ final class NotificationCell: SelectableCell, CAAnimationDelegate {
         commentButton.setTitleColor(grey, for: .normal)
         commentButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -2, right: 0)
         commentButton.titleEdgeInsets = UIEdgeInsets(top: -4, left: 2, bottom: 0, right: 0)
-        commentButton.setImage(UIImage(named: "comment-small")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        commentButton.setImage(UIImage(named: "comment-small").withRenderingMode(.alwaysTemplate), for: .normal)
         commentButton.contentHorizontalAlignment = .left
         commentButton.snp.makeConstraints { make in
-            make.width.equalTo(actionsHeight)
+            make.height.equalTo(actionsHeight)
+            make.width.equalTo(commentButton.snp.height)
         }
 
         watchButton.tintColor = grey
         watchButton.addTarget(self, action: #selector(onWatch(sender:)), for: .touchUpInside)
         watchButton.contentHorizontalAlignment = .center
         watchButton.snp.makeConstraints { make in
-            make.width.equalTo(actionsHeight)
+            make.height.equalTo(actionsHeight)
+            make.width.equalTo(watchButton.snp.height)
         }
 
         readButton.tintColor = grey
-        readButton.setImage(UIImage(named: "check-small")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        readButton.setImage(UIImage(named: "check-small").withRenderingMode(.alwaysTemplate), for: .normal)
         readButton.addTarget(self, action: #selector(onRead(sender:)), for: .touchUpInside)
         readButton.contentHorizontalAlignment = .center
         readButton.snp.makeConstraints { make in
-            make.width.equalTo(actionsHeight)
+            make.height.equalTo(actionsHeight)
+            make.width.equalTo(readButton.snp.height)
         }
 
         moreButton.tintColor = grey
-        moreButton.setImage(UIImage(named: "bullets-small")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        moreButton.setImage(UIImage(named: "bullets-small").withRenderingMode(.alwaysTemplate), for: .normal)
         moreButton.addTarget(self, action: #selector(onMore(sender:)), for: .touchUpInside)
         moreButton.contentHorizontalAlignment = .right
         moreButton.snp.makeConstraints { make in
-            make.width.equalTo(actionsHeight)
+            make.height.equalTo(actionsHeight)
+            make.width.equalTo(moreButton.snp.height)
         }
 
         contentView.addBorder(.bottom, left: inset.left)
@@ -143,15 +147,6 @@ final class NotificationCell: SelectableCell, CAAnimationDelegate {
         super.layoutSubviews()
         textView.reposition(for: contentView.bounds.width)
         readOverlayView.frame = bounds
-//        CATransaction.begin()
-//        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-//        readLayer.path = UIBezierPath(ovalIn: readButton.bounds).cgPath
-//        readLayer.bounds = readButton.bounds
-//        readLayer.position = convert(readButton.center, from: readButton.superview)
-//        readLayer.transform = CATransform3DMakeScale(30, 30, 30)
-//        // keep the read layer in front
-//        readLayer.superlayer?.addSublayer(readLayer)
-//        CATransaction.commit()
     }
 
     override var accessibilityLabel: String? {
@@ -175,7 +170,9 @@ final class NotificationCell: SelectableCell, CAAnimationDelegate {
         let title = NSMutableAttributedString(string: "\(model.owner)/\(model.repo) ", attributes: titleAttributes)
         titleAttributes[.font] = Styles.Text.secondary.preferredFont
         switch model.number {
-        case .number(let number): title.append(NSAttributedString(string: "#\(number)", attributes: titleAttributes))
+        case .number(let number):
+            guard model.type != .securityVulnerability else { break }
+            title.append(NSAttributedString(string: "#\(number)", attributes: titleAttributes))
         default: break
         }
         detailsLabel.attributedText = title

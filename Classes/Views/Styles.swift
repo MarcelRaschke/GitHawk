@@ -47,6 +47,7 @@ enum Styles {
         static let cardCornerRadius: CGFloat = 6
         static let maxImageHeight: CGFloat = 300
         static let contextMenuSize: CGSize = CGSize(width: 280, height: 240)
+        static let contextMenuSmallSize: CGSize = CGSize(width: 180, height: 240)
 
         enum HTML {
             static let boldWeight = 600
@@ -83,13 +84,14 @@ enum Styles {
 
     enum Colors {
 
-        static let background = Styles.Colors.Gray.lighter.color
+        static let background = UIColor.white
         static let purple = "6f42c1"
         static let blueGray = "8697af"
         static let menuBackgroundColor = "292D35"
         static let splitViewBackground = UIColor(red: 0.556863, green: 0.556863, blue: 0.576471, alpha: 1)
 
         enum Red {
+            static let dark = "75151d"
             static let medium = "cb2431"
             static let light = "ffeef0"
         }
@@ -102,6 +104,7 @@ enum Styles {
         enum Blue {
             static let medium = "0366d6"
             static let light = "f1f8ff"
+            static let menu = "5d9cf4"
         }
 
         enum Gray {
